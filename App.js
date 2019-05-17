@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation'
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';

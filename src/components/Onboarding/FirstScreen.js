@@ -25,7 +25,6 @@ export default class FirstScreen extends Component {
                         title={'Hesap Oluştur'} 
                         onPress={() => Actions.register()}
                      />
-                    
                 </View>
 
                 <View style={{ flex: 1, width: '70%', backgroundColor: '' }}>

@@ -77,12 +77,12 @@ export default class componentName extends Component {
             hideNavBar
             component={FirstScreen}
             initial
-
           />
 
           <Scene key="login"
             hideNavBar
             component={Login}
+            
           />
           <Scene key="register"
             hideNavBar
@@ -90,12 +90,11 @@ export default class componentName extends Component {
           />
 
           <Drawer
-            key="Main"
+            key="main"
             hideNavBar
             contentComponent={() => null}
             drawerPosition="left"
             drawerWidth={width/1.3}
-            // renderTitle={() => { return <AppLogo />; }}
             renderRightButton={rightButton}
             renderLeftButton={leftButton}
           >
