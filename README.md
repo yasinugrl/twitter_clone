@@ -5,7 +5,6 @@
 ### 2- react-native link
 
 
-## For IOS
-### in ios folder
-### pod install(you have to use cocoapods)
+### For IOS
+### /ios  => pod install
 
