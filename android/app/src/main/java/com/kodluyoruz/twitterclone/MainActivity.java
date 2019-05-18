@@ -1,4 +1,4 @@
-package com.twitter_clone;
+package com.kodluyoruz.twitterclone;
 
 import com.facebook.react.ReactActivity;
 
