@@ -82,11 +82,11 @@ export default class componentName extends Component {
           <Scene key="login"
             hideNavBar
             component={Login}
-            
           />
           <Scene key="register"
             hideNavBar
             component={Register}
+            
           />
 
           <Drawer

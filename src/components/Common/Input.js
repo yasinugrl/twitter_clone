@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 class Input extends Component {
-
   state = {
     showRightIcon: false
   }

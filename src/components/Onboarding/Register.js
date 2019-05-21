@@ -4,11 +4,13 @@ import { SafeAreaView } from 'react-navigation'
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Input } from '../Common';
+import { connect } from 'react-redux';
+import { register } from '../../actions';
 
 
 import { colors } from '../../style';
 
-export default class Register extends Component {
+class Register extends Component {
   state = {
     showRightIcon: false,
     email: '',
@@ -70,47 +72,58 @@ export default class Register extends Component {
           <View />
         </View>
 
-        <View style={{ flex: 9, backgroundColor: '' }}>
-          <ScrollView style={{ backgroundColor: '', padding: 20 }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 20, width: '70%', marginBottom: 20, textAlign: 'left', }}>Hesabını Oluştur</Text>
-
-            <Input
-              placeholder={'kullanıcı adı'}
-              rightIcon={'close'}
-              showRightIcon
-              value={this.state.username}
-              onChangeText={(username) => { this.setState({ username }) }}
-              onPressIcon={() => console.log('icona tik')}
-            />
-
-            <Input
-              placeholder={'e-posta'}
-              rightIcon={'close'}
-              showRightIcon
-              value={this.state.email}
-              onChangeText={(email) => { this.setState({ email }) }}
-              onPressIcon={() => console.log('icona tik')}
-            />
-
-            <Input
-              placeholder={'Şifre'}
-              rightIcon={'close'}
-              secureTextEntry
-              showRightIcon={false}
-              value={this.state.password}
-              onChangeText={(password) => { this.setState({ password }) }}
-              onPressIcon={() => console.log('icona tik')}
-            />
-
-          </ScrollView>
-
+        { this.props.loading ?
+        <View style={{ flex: 9, justifyContent: 'center' }}>
+          <ActivityIndicator size="large" color={colors.main} />
         </View>
+         : 
+         <View style={{ flex: 9, backgroundColor: '' }}>
+         <ScrollView style={{ backgroundColor: '', padding: 20 }}>
+           <Text style={{ fontWeight: 'bold', fontSize: 20, width: '70%', marginBottom: 20, textAlign: 'left', }}>Hesabını Oluştur</Text>
+
+           <Input
+             placeholder={'kullanıcı adı'}
+             rightIcon={'close'}
+             showRightIcon
+             value={this.state.username}
+             onChangeText={(username) => { this.setState({ username }) }}
+             onPressIcon={() => console.log('icona tik')}
+           />
+
+           <Input
+             placeholder={'e-posta'}
+             rightIcon={'close'}
+             showRightIcon
+             value={this.state.email}
+             onChangeText={(email) => { this.setState({ email }) }}
+             onPressIcon={() => console.log('icona tik')}
+           />
+
+           <Input
+             placeholder={'Şifre'}
+             rightIcon={'close'}
+             secureTextEntry
+             showRightIcon={false}
+             value={this.state.password}
+             onChangeText={(password) => { this.setState({ password }) }}
+             onPressIcon={() => console.log('icona tik')}
+           />
+
+         </ScrollView>
+
+       </View>
+         }
+
 
 
         <Animated.View style={[{ flex: 0.6, backgroundColor: '#edeeef', borderTopColor: '#b7b7b7', borderTopWidth: 0.3, alignItems: 'center', padding: 10, alignItems: 'flex-end' }, animatedStyles]}>
           <Button
             title={'Kayıt ol'}
-            onPress={() => console.log()
+            onPress={() => this.props.register(
+              this.state.username,
+              this.state.email,
+              this.state.password
+            )
             }
             style={{ width: '25%', height: 30 }}
           />
@@ -121,3 +134,10 @@ export default class Register extends Component {
     );
   }
 }
+
+const mapStataToProps = ({ authResponse }) => {
+  console.log(authResponse);
+  return { loading: authResponse.loading }
+}
+
+export default connect(mapStataToProps, { register })(Register)
