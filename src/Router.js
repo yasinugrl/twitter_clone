@@ -16,6 +16,9 @@ import Home from './components/Home';
 import Explore from './components/Explore';
 import Likes from './components/Likes';
 import Profile from './components/Profile';
+
+import Menu from './components/Menu';
+
 import { colors } from './style';
 
 const { width } = Dimensions.get('window');
@@ -92,7 +95,7 @@ export default class componentName extends Component {
           <Drawer
             key="main"
             hideNavBar
-            contentComponent={() => null}
+            contentComponent={Menu}
             drawerPosition="left"
             drawerWidth={width/1.3}
             renderRightButton={rightButton}

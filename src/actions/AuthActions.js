@@ -50,7 +50,6 @@ export const register = (username, email, password) => {
                         // db ye veri yaz
                         firebase.firestore().collection('users').doc(id).set({ username, email, password }).then(success => {
                             console.log('Kayıt başarılı: ', success);
-                            
                         }).catch(error => {
                             console.log('Kayıt başarısız:', error);
                             
