@@ -6,9 +6,10 @@ target 'twitter_clone' do
   # use_frameworks!
 	
   # Pods for twitter_clone
-  
 	pod 'Firebase/Core', '~> 5.20.1'
     pod 'Firebase/Auth', '~> 5.20.1'
     pod 'Firebase/Firestore', '~> 5.20.1'
+    pod 'Firebase/Storage', '~> 5.20.1'
+
 
 end

@@ -1,26 +1,43 @@
-import { Alert } from 'react-native';
+import { Alert, AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
 import { Actions } from 'react-native-router-flux';
 
-import { LOGIN_START, 
-    LOGIN_SUCCESS, 
+import {
+    LOGIN_START,
+    LOGIN_SUCCESS,
     LOGIN_FAILD,
     REGISTER_START,
     REGISTER_SUCCESS,
-    REGISTER_FAILD
+    REGISTER_FAILD,
+    LOGIN_INFO_LOCAL
 
 } from './types';
 
 
 export const login = (email, password) => {
     return (dispatch) => {
-        if(validateEmail(email)) {
-            if(email !== '' && password !== '') {
+        if (validateEmail(email)) {
+            if (email !== '' && password !== '') {
                 dispatch({ type: LOGIN_START });
                 firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
-                    console.log('Başarılı: ', user);
-                    dispatch({ type: LOGIN_SUCCESS });
-                    Actions.main({ type: 'reset' });
+                    console.log('Başarılı: ', user.user._user.uid);
+
+                    const id = user.user._user.uid;
+
+                    AsyncStorage.setItem(LOGIN_INFO_LOCAL, JSON.stringify({ email, password }));
+
+
+
+                    firebase.firestore().collection('users').doc(id).get().then((doc) => {
+                        console.log('user data', doc.data());
+
+                        dispatch({ type: LOGIN_SUCCESS, payload: doc.data() });
+                        Actions.main({ type: 'reset' });
+                    }).catch((error) => {
+                        console.log(error);
+                        
+                    })
+
                 }).catch(error => {
                     console.log('Hatalı:', error);
                     Alert.alert('Kullanıcları bilgileri hatalı!')
@@ -36,13 +53,13 @@ export const login = (email, password) => {
 }
 export const register = (username, email, password) => {
     return (dispatch) => {
-        if(password.length >= 6) { 
-            if(validateEmail(email)) {
-                if(email !== '' && password !== '' && username !== '') {
+        if (password.length >= 6) {
+            if (validateEmail(email)) {
+                if (email !== '' && password !== '' && username !== '') {
                     dispatch({ type: REGISTER_START });
                     firebase.auth().createUserWithEmailAndPassword(email, password).then(user => {
                         console.log('Register Başarılı: ', user.user._user.uid);
-                       
+
                         dispatch({ type: REGISTER_SUCCESS });
 
                         const id = user.user._user.uid;
@@ -52,7 +69,7 @@ export const register = (username, email, password) => {
                             console.log('Kayıt başarılı: ', success);
                         }).catch(error => {
                             console.log('Kayıt başarısız:', error);
-                            
+
                         })
                         Actions.pop();
                     }).catch(error => {
@@ -69,7 +86,7 @@ export const register = (username, email, password) => {
         } else {
             Alert.alert('Şifreniz 6 haneden fazla olmalı!')
         }
-        
+
     }
 }
 
