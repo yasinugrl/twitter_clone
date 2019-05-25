@@ -10,7 +10,7 @@ import Login from './components/Onboarding/Login';
 import FirstScreen from './components/Onboarding/FirstScreen';
 import Register from './components/Onboarding/Register';
 
-
+import AddTweet from './components/Tweets/AddTweet';
 // In Page
 import Home from './components/Home';
 import Explore from './components/Explore';
@@ -31,29 +31,29 @@ const iconn = (name, data) => {
 
 const rightButton = () => {
   return (
-      <TouchableHighlight
-        onPress={() => {
-          
-        }} 
-        underlayColor='transparent'
-        style={{ marginRight: 10 }}
-      >
+    <TouchableHighlight
+      onPress={() => {
+
+      }}
+      underlayColor='transparent'
+      style={{ marginRight: 10 }}
+    >
       <Icon color={colors.main} name={'cog'} size={20} />
-     </TouchableHighlight>
+    </TouchableHighlight>
   );
 };
 
 const leftButton = () => {
   return (
-      <TouchableHighlight
-        onPress={() => {
-          Actions.drawerOpen()
-        }} 
-        underlayColor='transparent'
-        style={{ marginLeft: 10 }}
-      >
+    <TouchableHighlight
+      onPress={() => {
+        Actions.drawerOpen()
+      }}
+      underlayColor='transparent'
+      style={{ marginLeft: 10 }}
+    >
       <Icon name={'user-circle'} size={30} />
-     </TouchableHighlight>
+    </TouchableHighlight>
   );
 };
 
@@ -68,36 +68,39 @@ export default class componentName extends Component {
         titleStyle={styles.titleStyle}
         sceneStyle={{ backgroundColor: 'white' }}
       >
-        <Stack 
-          key='Main' 
+        <Scene
+          key='Main'
           hideNavBar
-          transitionConfig={(data) => 
-           { 
-            screenInterpolator: StackViewStyleInterpolator.forHorizontal }
-           
-           }>
-          <Scene key="firstScreen"
-            hideNavBar
-            component={FirstScreen}
-            initial
-          />
+          transitionConfig={(data) => {
+            screenInterpolator: StackViewStyleInterpolator.forHorizontal
+          }}
+          modal
+        >
+          <Scene key='onboarding'>
+            <Scene key="firstScreen"
+              hideNavBar
+              component={FirstScreen}
+              initial
+            />
 
-          <Scene key="login"
-            hideNavBar
-            component={Login}
-          />
-          <Scene key="register"
-            hideNavBar
-            component={Register}
-            
-          />
+            <Scene key="login"
+              hideNavBar
+              component={Login}
+            />
+            <Scene key="register"
+              hideNavBar
+              component={Register}
+
+            />
+
+          </Scene>
 
           <Drawer
             key="main"
             hideNavBar
             contentComponent={Menu}
             drawerPosition="left"
-            drawerWidth={width/1.3}
+            drawerWidth={width / 1.3}
             renderRightButton={rightButton}
             renderLeftButton={leftButton}
           >
@@ -128,7 +131,13 @@ export default class componentName extends Component {
                 component={Profile} />
             </Tabs>
           </Drawer>
-        </Stack>
+          <Scene
+            key="addtweet"
+            title={'Add Tweet'}
+            hideNavBar
+            component={AddTweet}
+          />
+        </Scene>
       </Router>
     );
   }

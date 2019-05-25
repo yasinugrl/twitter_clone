@@ -21,6 +21,8 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+ios/GoogleService-Info.plist
+
 
 # Android/IntelliJ
 #
@@ -35,7 +37,6 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
-
 # BUCK
 buck-out/
 \.buckd/
