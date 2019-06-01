@@ -1,31 +1,33 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableHighlight, Dimensions } from 'react-native';
 
-import { Router, Scene, Tabs, Stack, Drawer, Actions } from 'react-native-router-flux';
+import { Router, Scene, Tabs, Stack, Drawer, Actions, Modal } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StackViewStyleInterpolator from 'react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator';
-
 // Onboarding Page
 import Login from './components/Onboarding/Login';
 import FirstScreen from './components/Onboarding/FirstScreen';
 import Register from './components/Onboarding/Register';
 
-import AddTweet from './components/Tweets/AddTweet';
+
 // In Page
 import Home from './components/Home';
 import Explore from './components/Explore';
 import Likes from './components/Likes';
-import Profile from './components/Profile';
-
-import Menu from './components/Menu';
-
+import Message from './components/Message';
+import AddTweet from './components/Tweet/AddTweet';
+import TweetDetail from './components/Tweet/TweetDetail';
 import { colors } from './style';
 
+import Profile from './components/Users/Profile';
+
+
+// Menu
+
+import Menu from './components/Menu';
 const { width } = Dimensions.get('window');
 
-
 const iconn = (name, data) => {
-  console.log(data.focused);
   return <Icon color={data.focused ? colors.main : 'black'} name={name} size={25} />
 }
 
@@ -68,15 +70,17 @@ export default class componentName extends Component {
         titleStyle={styles.titleStyle}
         sceneStyle={{ backgroundColor: 'white' }}
       >
-        <Scene
+        <Stack
           key='Main'
           hideNavBar
           transitionConfig={(data) => {
             screenInterpolator: StackViewStyleInterpolator.forHorizontal
-          }}
+          }
+          }
           modal
         >
-          <Scene key='onboarding'>
+
+          <Scene key='onboarding' modal={false}>
             <Scene key="firstScreen"
               hideNavBar
               component={FirstScreen}
@@ -90,9 +94,7 @@ export default class componentName extends Component {
             <Scene key="register"
               hideNavBar
               component={Register}
-
             />
-
           </Scene>
 
           <Drawer
@@ -112,6 +114,7 @@ export default class componentName extends Component {
                 component={Home}
                 initial
               />
+
               <Scene key="explore"
                 title="Keşfet"
                 icon={(data) => iconn('search', data)}
@@ -125,19 +128,36 @@ export default class componentName extends Component {
                 component={Likes} />
 
 
-              <Scene key="profile"
+              <Scene key="message"
                 icon={(data) => iconn('envelope', data)}
-                title={'Profil'}
-                component={Profile} />
+                title={'Mesajlar'}
+                component={Message} />
             </Tabs>
           </Drawer>
+
           <Scene
-            key="addtweet"
-            title={'Add Tweet'}
-            hideNavBar
-            component={AddTweet}
+            key="tweetdetail"
+            component={TweetDetail}
+            title={'Tweet detay'}
+            back
+            renderRightButton={() => null}
+            clone
           />
-        </Scene>
+
+          <Scene
+            key="profile"
+            component={Profile}
+            hideNavBar
+            clone
+          />
+
+          <Scene key="addtweet"
+            component={AddTweet}
+            hideNavBar
+          />
+
+
+        </Stack>
       </Router>
     );
   }

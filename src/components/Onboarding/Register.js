@@ -16,9 +16,10 @@ class Register extends Component {
     email: '',
     password: '',
     username: '',
+    name: '',
     animation: new Animated.Value(0)
   }
- 
+
   componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardWillShow',
@@ -38,7 +39,7 @@ class Register extends Component {
   _keyboardWillShow(e) {
     console.log(e.endCoordinates.height);
     this.moveBottomView(-e.endCoordinates.height);
-    
+
     console.log('_keyboardDidShow');
   }
 
@@ -47,17 +48,17 @@ class Register extends Component {
     this.state.animation.setValue(0);
   }
 
-  moveBottomView(height){
+  moveBottomView(height) {
     console.log('asdasd');
     Animated.timing(this.state.animation, {
-        toValue: height,
-        duration: 300
-      }).start();
+      toValue: height,
+      duration: 300
+    }).start();
   }
 
   render() {
     const animatedStyles = {
-      transform: [{ 
+      transform: [{
         translateY: this.state.animation,
       }],
     };
@@ -67,52 +68,61 @@ class Register extends Component {
         style={{ flex: 1 }}>
 
         <View style={{ flex: 1, backgroundColor: '', flexDirection: 'row', alignItems: 'center', padding: 10, justifyContent: 'space-between' }}>
-          <Icon color={colors.main} name={'chevron-left'} size={20} onPress={() => Actions.pop()}/>
+          <Icon color={colors.main} name={'chevron-left'} size={20} onPress={() => Actions.pop()} />
           <Icon color={colors.main} name={'twitter'} size={40} />
           <View />
         </View>
 
-        { this.props.loading ?
-        <View style={{ flex: 9, justifyContent: 'center' }}>
-          <ActivityIndicator size="large" color={colors.main} />
-        </View>
-         : 
-         <View style={{ flex: 9, backgroundColor: '' }}>
-         <ScrollView style={{ backgroundColor: '', padding: 20 }}>
-           <Text style={{ fontWeight: 'bold', fontSize: 20, width: '70%', marginBottom: 20, textAlign: 'left', }}>Hesabını Oluştur</Text>
+        {this.props.loading ?
+          <View style={{ flex: 9, justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color={colors.main} />
+          </View>
+          :
+          <View style={{ flex: 9, backgroundColor: '' }}>
+            <ScrollView style={{ backgroundColor: '', padding: 20 }}>
+              <Text style={{ fontWeight: 'bold', fontSize: 20, width: '70%', marginBottom: 20, textAlign: 'left', }}>Hesabını Oluştur</Text>
 
-           <Input
-             placeholder={'kullanıcı adı'}
-             rightIcon={'close'}
-             showRightIcon
-             value={this.state.username}
-             onChangeText={(username) => { this.setState({ username }) }}
-             onPressIcon={() => console.log('icona tik')}
-           />
+              <Input
+                placeholder={'İsim'}
+                rightIcon={'close'}
+                showRightIcon
+                value={this.state.name}
+                onChangeText={(name) => { this.setState({ name }) }}
+                onPressIcon={() => console.log('icona tik')}
+              />
 
-           <Input
-             placeholder={'e-posta'}
-             rightIcon={'close'}
-             showRightIcon
-             value={this.state.email}
-             onChangeText={(email) => { this.setState({ email }) }}
-             onPressIcon={() => console.log('icona tik')}
-           />
+              <Input
+                placeholder={'kullanıcı adı'}
+                rightIcon={'close'}
+                showRightIcon
+                value={this.state.username}
+                onChangeText={(username) => { this.setState({ username }) }}
+                onPressIcon={() => console.log('icona tik')}
+              />
 
-           <Input
-             placeholder={'Şifre'}
-             rightIcon={'close'}
-             secureTextEntry
-             showRightIcon={false}
-             value={this.state.password}
-             onChangeText={(password) => { this.setState({ password }) }}
-             onPressIcon={() => console.log('icona tik')}
-           />
+              <Input
+                placeholder={'e-posta'}
+                rightIcon={'close'}
+                showRightIcon
+                value={this.state.email}
+                onChangeText={(email) => { this.setState({ email }) }}
+                onPressIcon={() => console.log('icona tik')}
+              />
 
-         </ScrollView>
+              <Input
+                placeholder={'Şifre'}
+                rightIcon={'close'}
+                secureTextEntry
+                showRightIcon={false}
+                value={this.state.password}
+                onChangeText={(password) => { this.setState({ password }) }}
+                onPressIcon={() => console.log('icona tik')}
+              />
 
-       </View>
-         }
+            </ScrollView>
+
+          </View>
+        }
 
 
 
@@ -122,7 +132,8 @@ class Register extends Component {
             onPress={() => this.props.register(
               this.state.username,
               this.state.email,
-              this.state.password
+              this.state.password,
+              this.state.name
             )
             }
             style={{ width: '25%', height: 30 }}

@@ -9,8 +9,11 @@ import {
     REGISTER_START,
     REGISTER_SUCCESS,
     REGISTER_FAILD,
-    LOGIN_INFO_LOCAL
+    SAVE_USER_INFO,
 
+    GET_USER_DATA_START,
+    GET_USER_DATA_SUCCESS,
+    GET_USER_DATA_FAILD
 } from './types';
 
 
@@ -20,24 +23,9 @@ export const login = (email, password) => {
             if (email !== '' && password !== '') {
                 dispatch({ type: LOGIN_START });
                 firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
-                    console.log('Başarılı: ', user.user._user.uid);
-
-                    const id = user.user._user.uid;
-
-                    AsyncStorage.setItem(LOGIN_INFO_LOCAL, JSON.stringify({ email, password }));
-
-
-
-                    firebase.firestore().collection('users').doc(id).get().then((doc) => {
-                        console.log('user data', doc.data());
-
-                        dispatch({ type: LOGIN_SUCCESS, payload: doc.data() });
-                        Actions.main({ type: 'reset' });
-                    }).catch((error) => {
-                        console.log(error);
-                        
-                    })
-
+                    console.log('Başarılı: ', user);
+                    const user_info = { email, password };
+                    getUserData(user, dispatch, user_info);
                 }).catch(error => {
                     console.log('Hatalı:', error);
                     Alert.alert('Kullanıcları bilgileri hatalı!')
@@ -59,19 +47,17 @@ export const register = (username, email, password) => {
                     dispatch({ type: REGISTER_START });
                     firebase.auth().createUserWithEmailAndPassword(email, password).then(user => {
                         console.log('Register Başarılı: ', user.user._user.uid);
-
                         dispatch({ type: REGISTER_SUCCESS });
-
                         const id = user.user._user.uid;
 
                         // db ye veri yaz
-                        firebase.firestore().collection('users').doc(id).set({ username, email, password }).then(success => {
+                        firebase.firestore().collection('users').doc(id).set({ username, email, password, following: 0, followers: 0  }).then(success => {
                             console.log('Kayıt başarılı: ', success);
                         }).catch(error => {
                             console.log('Kayıt başarısız:', error);
-
                         })
-                        Actions.pop();
+
+                        Actions.login();
                     }).catch(error => {
                         console.log('Register Hatalı:', error);
                         // Alert.alert('');
@@ -86,8 +72,32 @@ export const register = (username, email, password) => {
         } else {
             Alert.alert('Şifreniz 6 haneden fazla olmalı!')
         }
-
     }
+}
+
+export const getOtherUserData = (uid) => { 
+    return (dispatch) => {
+        dispatch({ type: GET_USER_DATA_START });
+        firebase.firestore().collection('users').doc(uid).get().then((value) => {
+            dispatch({ type: GET_USER_DATA_SUCCESS, payload: value._data });
+        }).catch(error => {
+            console.log(error);
+            dispatch({ type: GET_USER_DATA_FAILD });
+        })
+    }
+
+}
+
+const getUserData = async (user, dispatch, user_info) => {
+    const id = user.user._user.uid;
+    firebase.firestore().collection('users').doc(id).get().then((value) => {
+        AsyncStorage.setItem(SAVE_USER_INFO, JSON.stringify(user_info));
+        dispatch({ type: LOGIN_SUCCESS, payload: value._data });
+        Actions.main({ type: 'reset' });
+    }).catch(error => {
+        console.log(error);
+        dispatch({ type: LOGIN_FAILD });
+    })
 }
 
 function validateEmail(email) {

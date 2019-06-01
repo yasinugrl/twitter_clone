@@ -5,17 +5,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-navigation'
 import { Button } from '../Common';
 import { colors } from '../../style';
-import { LOGIN_INFO_LOCAL } from '../../actions/types';
+import { SAVE_USER_INFO } from '../../actions/types';
 
 import { connect } from 'react-redux';
 import { login } from '../../actions';
 
 class FirstScreen extends Component {
     componentWillMount() {
-        AsyncStorage.getItem(LOGIN_INFO_LOCAL)
+        AsyncStorage.getItem(SAVE_USER_INFO)
             .then(req => JSON.parse(req))
             .then(json => {
-                console.log(json);
+                console.log('Login olan kullanıcı: ', json);
                 if (json !== null) {
                     this.props.login(json.email, json.password)
                 } else {

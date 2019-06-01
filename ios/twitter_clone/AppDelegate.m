@@ -30,7 +30,9 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
+  
   [FIRApp configure];
+  [GADMobileAds configureWithApplicationID:@"ca-app-pub-5382522226522824~6170571460"];
   
   return YES;
 }

@@ -80,7 +80,11 @@
   <string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
   <key>NSMicrophoneUsageDescription</key>
   <string>$(PRODUCT_NAME) would like to your microphone (for videos)</string>
-  
-  
+  <key>GADIsAdManagerApp</key>
+  <true/>
+  <key>GADApplicationIdentifier</key>
+  <string>ca-app-pub-1275343156861859~8975280329</string>
+  <key>firebase_crashlytics_collection_enabled</key>
+  <false/>
 </dict>
 </plist>
